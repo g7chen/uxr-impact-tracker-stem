@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UXR Impact Tracker</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+<style>
+:root{
+  --surface-2:#ffffff; --surface-1:#f6f5f0; --surface-0:#efede5;
+  --text-primary:#1c1c1a; --text-secondary:#5f5e5a; --text-muted:#888780;
+  --border:rgba(0,0,0,0.12); --border-strong:rgba(0,0,0,0.24); --radius:8px;
+  --bg-accent:#E6F1FB; --text-accent:#0C447C; --border-accent:#378ADD;
+  --bg-success:#EAF3DE; --text-success:#27500A; --border-success:#639922;
+  --bg-warning:#FAEEDA; --text-warning:#633806; --border-warning:#BA7517;
+  --bg-danger:#FCEBEB; --text-danger:#791F1F; --border-danger:#E24B4A;
+  --bg-pro:#EEEDFE; --text-pro:#3C3489; --border-pro:#7F77DD;
+  --bg-new:#FBEAF0; --text-new:#993556; --border-new:#D4537E;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --surface-2:#242320; --surface-1:#1b1a18; --surface-0:#141312;
+    --text-primary:#f1efe8; --text-secondary:#b4b2a9; --text-muted:#8b897f;
+    --border:rgba(255,255,255,0.14); --border-strong:rgba(255,255,255,0.26);
+    --bg-accent:#0C447C; --text-accent:#B5D4F4; --border-accent:#378ADD;
+    --bg-success:#27500A; --text-success:#C0DD97; --border-success:#639922;
+    --bg-warning:#633806; --text-warning:#FAC775; --border-warning:#BA7517;
+    --bg-danger:#791F1F; --text-danger:#F7C1C1; --border-danger:#E24B4A;
+    --bg-pro:#3C3489; --text-pro:#CECBF6; --border-pro:#7F77DD;
+    --bg-new:#993556; --text-new:#F4C0D1; --border-new:#D4537E;
+  }
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--surface-0); color:var(--text-primary); font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; display:flex; justify-content:center; padding:2rem 1rem;}
+.app{max-width:760px; width:100%;}
+.card{background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1rem 1.25rem; margin-bottom:1rem;}
+h1{font-size:20px; font-weight:500; margin:0 0 4px;}
+h2{font-size:16px; font-weight:500; margin:0 0 0.75rem;}
+h3{font-size:14px; font-weight:500; margin:0 0 2px;}
+.muted{color:var(--text-secondary); font-size:13px;}
+.tiny{color:var(--text-muted); font-size:12px;}
+.row{display:flex; align-items:center; gap:8px;}
+.between{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:3px 10px; border-radius:100px; border:0.5px solid var(--border); background:var(--surface-1); color:var(--text-secondary);}
+.badge{display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:500; padding:3px 9px; border-radius:100px; white-space:nowrap;}
+.badge.success{background:var(--bg-success); color:var(--text-success);}
+.badge.warning{background:var(--bg-warning); color:var(--text-warning);}
+.badge.accent{background:var(--bg-accent); color:var(--text-accent);}
+.badge.pro{background:var(--bg-pro); color:var(--text-pro);}
+.badge.neutral{background:var(--surface-1); color:var(--text-secondary); border:0.5px solid var(--border);}
+.badge.new{background:var(--bg-new); color:var(--text-new);}
+.item.new-item{border-left:3px solid var(--border-new); background:var(--bg-new); padding:10px 10px 10px 9px; border-radius:0 var(--radius) var(--radius) 0;}
+.item{border-top:0.5px solid var(--border); padding:12px 0;}
+.item:first-child{border-top:none; padding-top:2px;}
+.pill-list{display:flex; flex-wrap:wrap; gap:6px;}
+.pill{font-size:12px; padding:3px 9px; border-radius:100px; background:var(--surface-1); border:0.5px solid var(--border); color:var(--text-secondary);}
+.section-head{display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;}
+.section-head i{font-size:18px; color:var(--text-secondary);}
+a{color:var(--text-accent); text-decoration:none; font-size:13px;}
+a:hover{text-decoration:underline;}
+button{font-family:inherit; font-size:13px; font-weight:500; padding:8px 14px; border-radius:var(--radius); border:0.5px solid var(--border-strong); background:transparent; color:var(--text-primary); cursor:pointer;}
+button:hover{background:var(--surface-1);}
+button.primary{background:var(--text-primary); color:var(--surface-2); border-color:var(--text-primary);}
+.tabbar{display:flex; gap:4px; margin-bottom:12px; border-bottom:0.5px solid var(--border);}
+.tabbtn{font-size:13px; padding:8px 4px; margin-right:16px; border:none; background:none; color:var(--text-secondary); cursor:pointer; border-bottom:2px solid transparent; border-radius:0;}
+.tabbtn.active{color:var(--text-primary); border-bottom-color:var(--text-primary); font-weight:500;}
+textarea{width:100%; min-height:140px; font-family:var(--font-mono, monospace); font-size:12px; padding:10px; border-radius:var(--radius); border:0.5px solid var(--border); background:var(--surface-1); color:var(--text-primary); resize:vertical;}
+input[type=text],input[type=url]{width:100%; height:36px; padding:0 10px; border-radius:var(--radius); border:0.5px solid var(--border); background:var(--surface-1); color:var(--text-primary); font-size:13px;}
+input[type=file]{font-size:13px; color:var(--text-secondary);}
+select{height:36px; padding:0 8px; border-radius:var(--radius); border:0.5px solid var(--border); background:var(--surface-1); color:var(--text-primary); font-size:13px;}
+.icon-btn{border:none; background:none; padding:2px 4px; color:var(--text-muted); cursor:pointer; border-radius:4px;}
+.icon-btn:hover{background:var(--surface-1); color:var(--text-primary);}
+.panel{display:none;}
+.panel.active{display:block;}
+.detail{margin-top:8px; padding-top:8px; border-top:0.5px dashed var(--border); font-size:13px; display:none;}
+.detail.open{display:block;}
+.toggle{font-size:12px; color:var(--text-accent); cursor:pointer; background:none; border:none; padding:0; font-weight:500;}
+.spin{animation:spin 0.9s linear infinite; display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.note{background:var(--surface-1); border-radius:var(--radius); padding:8px 10px; font-size:12px; color:var(--text-muted); margin-top:6px;}
+.search-wrap{position:relative;}
+.suggest-list{position:absolute; top:100%; left:0; right:0; background:var(--surface-2); border:0.5px solid var(--border); border-radius:var(--radius); margin-top:4px; max-height:220px; overflow-y:auto; z-index:10; box-shadow:0 4px 12px rgba(0,0,0,0.12);}
+.suggest-item{padding:8px 10px; cursor:pointer; font-size:13px; display:flex; align-items:center;}
+.suggest-item:hover{background:var(--surface-1);}
+.pill .chip-x{border:none; background:none; padding:0; margin-left:5px; cursor:pointer; color:var(--text-muted); vertical-align:middle; display:inline-flex;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div style="margin-bottom:1.5rem;">
+  <h1 style="font-size:24px; margin:0 0 8px;">UXR Impact Tracker</h1>
+  <p class="muted" style="font-size:14px; line-height:1.65; margin:0;">This impact tracker keeps a running record of team decisions influenced by UXR recommendations. By entering key project details, the tool automatically captures and organizes related documents, conversations, tickets, launches, and other relevant activities in one place. It is updated weekly, allowing you to easily monitor and reference your research impact over time.</p>
+</div>
+
+<div class="card" style="background:var(--bg-accent); border-color:var(--border-accent);">
+  <div class="row" style="gap:10px; margin-bottom:6px;">
+    <i class="ti ti-flask" style="font-size:18px; color:var(--text-accent);" aria-hidden="true"></i>
+    <span style="font-weight:500; color:var(--text-accent); font-size:14px;">Design prototype</span>
+  </div>
+  <p class="muted" style="margin:0; color:var(--text-accent);">The deck intake and parsing below actually runs in your browser. Slack, Atlassian, and Drive aren't connected in this preview, so cross-referenced timestamps and thread links are shown as placeholders &mdash; that's the piece that goes live once those are connected.</p>
+</div>
+
+<div id="setupWrap">
+
+<div class="card" id="inputCard">
+  <h2>1. Add your deck</h2>
+  <div class="tabbar">
+    <button class="tabbtn active" data-tab="paste" onclick="switchTab('paste')">Paste text</button>
+    <button class="tabbtn" data-tab="upload" onclick="switchTab('upload')">Upload file</button>
+    <button class="tabbtn" data-tab="link" onclick="switchTab('link')">Paste link</button>
+  </div>
+
+  <div class="panel active" id="panel-paste">
+    <textarea id="deckText" spellcheck="false" placeholder="Paste the text of your research deck or report here...">TikTok STEM Feed Creator Interviews
+Background
+Team: Trust and safety / minor safety stem feed
+Cross functional stakeholders include roles from brand &amp; comms, trust and safety, data science, government relations, public policy, content and creator team, etc.
+role: lead researcher
+I scoped the project with key XFN, created the research plan, recruited participants, conducted sessions, analyzed data, completed the final report, shared out with the larger team, and followed through with impact.
+Timeline: 5-6 weeks
+First week was dedicated to scoping the project, second week was recruitment, third week was focused on moderation, the fourth week was for analyzing insights, fifth week was creating the final report, and the last week was sharing-out with the team.
+product: STEM Feed team
+The STEM Feed product team focuses on the dedicated tab on the top navigation that provides verified content on science, technology, engineering, and science.
+Methodology: moderated user interviews
+A total of  (20) total educational content creators with (5) YouTube Educational creators, (5) YouTube STEM creators, (5) TikTok Educational creators, and (5) TikTok STEM creators.
+stats: increased engagement and perceptions
+STEM content has grown by 35% on TikTok since the STEM feed launched in other markets, including the US, Canada, the UK, and most countries across Europe. 1 in 3 young people on TikTok visit the STEM feed on a weekly basis in regions where it is available.
+Objective
+In 2025, only about 10%* of TikTok STEM Feed creators were making about 80% of the total STEM Feed content. So the team wanted to understand to increase the creator supply of the TikTok STEM Feed. In addition, the product team was weighing two possible directions for the Future of Education in TikTok: (1) double down on STEM by increasing the supply of STEM creators to accelerate the growth flywheel, or (2) expand into a broader range of educational topics such as history, language, and the arts. This study aimed to help the product team understand the trade-offs for both possible directions.
+*insights modified to protect proprietary data
+research questions
+
+1. What motivates educational/STEM creators to produce more content?
+2. What challenges do educational/STEM creators face, if any?
+3. How do motivations, challenges, and content strategies differ between TikTok and YouTube?
+4. What are educational/STEM creator perceptions of the STEM Feed on TikTok?
+Methodology
+Participants
+
+A total of  (20) total content creators
+
+* (10) educational/STEM YouTube creators
+   * Recruited via UserTesting
+   * N=5 must post primarily educational content (e.g., English, history, etc)
+   * N=5 must post primarily STEM content (e.g., Science, Technology, Engineer, Math)
+   * Must post content primarily on YouTube
+   * Must post at least 3-5 videos a month
+   * Prefer creators that also post on TikTok
+* (10) TikTok STEM Feed creators that post infrequently
+   * Recruited via back-end pulls
+   * N=5 must post primarily educational content (e.g., English, history, etc)
+      * Must post 3-5 videos a month
+   * N=5 must post primarily STEM content (e.g., Science, Technology, Engineer, Math)
+      * Must be labelled in the backend as a TikTok STEM Feed creator for at least 6 months
+      * Must have only posted about 1-2 videos on the STEM Feed (infrequent poster)
+   * Must post on TikTok
+*Data Scientist used distribution analysis to define infrequent STEM Feed creators as creators that have only posted 1-2 videos on STEM Feed.
+Procedure
+
+1. Introduction (3min)
+2. Background Questions (2min)
+3. Platform Specific Content Experience (15-20min)
+Understanding their creation experience
+Motivations posting educational content
+Challenges posting educational content
+4. Cross Platform Comparison (15-20min)
+Cross posting strategies
+Differences in motivation
+Differences in challenges and pain points
+5. Perceptions of STEM Feed (15min)
+Awareness
+Expectations
+Trade-offs of expanding the STEM Feed
+6. Conclusion Questions (5min)
+Application: Usertesting and Zoom interviews
+
+* Educational/STEM YouTube creators were recruited and moderated on UserTesting
+* TikTok Educational/STEM Feed creators were recruited via backend query pulls, sent through an in-app notification to their TikTok account, inviting them to participate in an interview for a gift card.
+Key Findings
+1. [Motivations] Educational and STEM creators across platforms were uniquely motivated by making a positive impact in the world
+
+* Like other content creators, educational/STEN creators are motivated to produce high-quality videos by 1) monetization, which gives them the resources to invest in better equipment and 2) community, which provides the social drive to continue posting.
+* What was unique to educational content creators was their drive to give back to their community through teaching and make real-life impact in the world.
+* This was shown through three main ways:
+   * 1) Amplifying impact: Rather than volunteering in classrooms, which only reach a handful of students at a time, creators can spend just 3-5 hours making a video that impacts thousands. Being an educational content creation was seen as the most efficient way to scale their positive influence.
+   * 2) Shaping everyday decisions: Many educational creators were motivated by a desire to influence everyday choices. For example, one marine-life creator hoped their videos would discourage people from eating octopus, while another raised awareness about the ethical challenges of owning parrots, helping audiences make more informed everyday decisions.
+   * 3) Building better futures: Educational creators sought to expand opportunities for learners of all ages and backgrounds. By sharing accessible content on platforms like YouTube and TikTok, they broke down barriers to education. One creator was especially inspired when his videos helped an 80-year old grandma learn how to build her own PC.
+Key Recommendation:
+
+* Consider highlighting the social good educational creators bring to their audience can quick, low-effort designs can boost creator motivation while larger monetization and community strategies are in progress.
+2. [challenges] Low awareness of the STEM Feed and its guidelines limited creators' ability to adapt content and increase supply.
+TikTok Creators (N=9) had low awareness of the STEM Feed guidelines
+
+* TikTok educational and STEM creators were generally more familiar with the STEM Feed, but often did not know if or how their content qualified.
+* Even some STEM Feed creators whose content had been included in the Feed, had low awareness of the STEM guidelines.
+* Many STEM creators said they would adapt their content more intentionally if they better understood the criteria and guidelines.
+
+* Key Recommendation:
+   * Leverage in-app notifications and emails to educate TikTok creators on STEM Feed qualifications.
+YouTube Creators (N=8) had low awareness of the STEM Feed
+
+* Most YouTube participants, across both educational and STEM segments, were unaware of the TikTok STEM Feed.
+* They primarily used TikTok to promote their YouTube, often clipping longer-form videos into short TikToks that did not qualify for the STEM Feed.
+* Once they learned about the STEM Feed, many said they would spend more time adapting their TikTok content to qualify.
+
+* Key Recommendation:
+   * Launch marketing campaigns to raise awareness for the STEM Feed
+3. [perceptions] educational Creators wanted the STEM Feed to expand beyond STEM topics to attract more like-minded learners and foster a stronger community with increased engagement.
+
+* Across platforms, educational creators valued the STEM Feed because it mirrored YouTube's intentional discovery via search, where users sought out specific topics. In contrast, the FYP on TikTok felt too diluted, proving difficult to reach an educational community. The STEM Feed provided a dedicated space for like-minded users who were passionate about learning.
+* STEM Feed creators were open to expanding as well, viewing more educational content as beneficial to everyone in the learning community.
+* Because of this, many creators across YouTube and TikTok felt that only including STEM topics was too niche. They wanted to drive other learners onto the STEM Feed by broadening the topics to also include things like language, history, geography, etc.
+Key Recommendation:
+
+* Consider expanding the STEM Feed to include broader educational topics, which will encourage a stronger community of engaged learners on TikTok.
+Key Recommendations
+
+1.  Launch designs that highlight the social good educational creators bring to their audience. These quick, low-effort mockups can boost creator motivation while larger monetization and community strategies are in progress.
+2. Highlight and clarify STEM Feed guidelines so educational/STEM creators increase awareness of the STEM Feed and understand how to change their content to fit the criteria, therefore increasing creator supply.
+3. Expand STEM Feed to include broader educational topics, which will encourage a stronger community of engaged learners on TikTok.
+Impact
+Jan 20, 2026 - Roadmap review incorporates STEM Feed creator research
+
+* Following Grace's readout, the product team confirmed guideline clarity and quiz-based retention tracking as Q2 roadmap priorities; broader topic expansion was flagged as a strategic direction pending policy review.
+
+Feb 3, 2026 - Engineering scoping for STEM Feed qualification notifications
+
+* Engineering began scoping the build for in-app and email notifications that tell creators when a video qualifies for the STEM Feed, targeting a beta in Q2.
+
+Feb 18, 2026 - Design review for STEM Feed quizzes feature
+
+* Design finalized the quiz format that lets creators add a short knowledge check to educational videos; engineering estimated a Q2 build.
+
+Mar 5, 2026 - Policy sign-off to pilot broader topics in Australia
+
+* Public policy and content teams approved a strategic pilot to expand the STEM Feed beyond STEM topics, selecting Australia as the test market ahead of a Q2 launch.
+
+Mar 24, 2026 - Notifications and quizzes features committed to Q2 roadmap
+
+* With engineering estimates in hand, the STEM Feed qualification notifications and creator quizzes were formally committed to the Q2 roadmap alongside the Australia pilot.
+
+Apr 6, 2026 - Beta launch of STEM Feed qualification notifications
+
+* In-app and email notifications began rolling out in beta to a small group of low-volume STEM creators, letting them know when a video newly qualifies for the STEM Feed.
+
+Apr 20, 2026 - piloting expansion of educational topics in the stem feed in Australia
+
+* Results from this study guided the team to expand the STEM Feed to broader educational topics. The product team is piloting this strategic direction starting in Australia, including topics such as language, history, literature, etc.
+* After reviewing metics from the pilot in Australia, the product team will determine whether we should expand to other high priority markets.
+
+May 4, 2026 - launch of in-app notifications and emails when a creator's video qualifies for the stem feed
+
+* By notifying low volume STEM creators when their video qualifies for the STEM Feed, the product team aims to increase education of the guidelines in a celebratory way.
+* Directing STEM creators to the right information will allow for more videos to qualify for the STEM Feed, increasing the creator supply.
+
+May 18, 2026 - Launch of quizzes on STEM Feed
+
+* The product team is launching quizzes, which will allow creators a low effort way to track how many viewers are retaining the content in their educational videos.
+* High or increasing retention scores from their audience will provide a quick and easy way to track how much of an impact educational creators are bringing to their audience.
+
+Jun 1, 2026 - Early creator supply signal from the STEM Feed
+
+* Qualifying video submissions from previously low-volume STEM creators are up 18% since guideline awareness efforts began reaching them in April, an early signal that clearer guidelines are increasing creator supply.
+
+Jun 15, 2026 - Early engagement read from the Australia topic expansion
+
+* Session engagement on the STEM Feed among Australian users who received the broader topics is trending up compared to the STEM-only control group, an early read the team is factoring into its Q3 market plans.
+
+Jun 22, 2026 - Quiz retention scores show an early completion boost
+
+* Creators using the new STEM Feed quizzes are seeing higher average video completion and retention among quiz-takers than non-quiz viewers, an early signal that the quick, low-effort format recommended in Grace's study is translating into measurable impact.
+</textarea>
+    <p class="tiny" style="margin:6px 0 0;">Pre-filled with the sample STEM Feed deck. Edit or replace it, then process below.</p>
+  </div>
+
+  <div class="panel" id="panel-upload">
+    <input type="file" id="fileInput" accept=".txt,.md" multiple onchange="handleFile(event)">
+    <p class="tiny" style="margin:8px 0 0;">Supports .txt and .md in this prototype &mdash; select multiple files to combine them into one deck. Slides (.pptx) or Word docs would be extracted the same way once the docx/pptx parser is wired in &mdash; for now, paste the text directly.</p>
+  </div>
+
+  <div class="panel" id="panel-link">
+    <input type="url" id="linkInput" placeholder="https://docs.google.com/presentation/...">
+    <p class="tiny" style="margin:8px 0 0;">This prototype can't fetch a live deck from a link yet. Add the link to keep it attached as the source reference, and paste the text into the "Paste text" tab to actually process it.</p>
+  </div>
+
+</div>
+
+<div class="card" id="teamCard">
+  <h2>2. Add relevant team members</h2>
+  <p class="tiny" style="margin:0 0 8px;">Pretend this is connected to your workplace directory &mdash; search and add the people on this project.</p>
+  <div class="search-wrap">
+    <input type="text" id="teamSearch" placeholder="Search by name or role..." oninput="searchDirectory(this.value)" onfocus="searchDirectory(this.value)" onblur="setTimeout(function(){document.getElementById('teamSuggest').style.display='none';},150)">
+    <div id="teamSuggest" class="suggest-list" style="display:none;"></div>
+  </div>
+  <div class="pill-list" id="teamChips" style="margin-top:10px;"></div>
+</div>
+
+<div class="card" id="channelsCard">
+  <h2>3. Add relevant chats</h2>
+  <p class="tiny" style="margin:0 0 8px;">Pretend this is connected to Slack &mdash; search and add the channels or threads worth watching.</p>
+  <div class="search-wrap">
+    <input type="text" id="channelSearch" placeholder="Search Slack channels..." oninput="searchChannels(this.value)" onfocus="searchChannels(this.value)" onblur="setTimeout(function(){document.getElementById('channelSuggest').style.display='none';},150)">
+    <div id="channelSuggest" class="suggest-list" style="display:none;"></div>
+  </div>
+  <div class="pill-list" id="channelChips" style="margin-top:10px;"></div>
+</div>
+
+<div class="card" id="publishDateCard">
+  <h2>4. Add deck publication date</h2>
+  <p class="tiny" style="margin:0 0 8px;">Used to generate quarterly recaps once the analysis runs.</p>
+  <input type="date" id="publishDateSetup" value="2026-01-15" style="width:170px;" oninput="globalPublishDate=this.value; if(document.getElementById('quarterButtons')) renderQuarterButtons();">
+</div>
+
+<div class="card">
+  <h2>5. Run analysis</h2>
+  <p class="tiny" style="margin:0 0 12px;">Cross-references your deck against the team and channels above, once Slack, Jira/Confluence, and Drive are connected.</p>
+  <div class="row">
+    <button class="primary" onclick="processDeck()"><i class="ti ti-wand" id="processIcon" style="font-size:14px; vertical-align:-2px; margin-right:4px;" aria-hidden="true"></i><span id="processLabel">Process deck</span></button>
+    <span class="tiny" id="processStatus"></span>
+  </div>
+</div>
+
+</div>
+
+<div id="resultsWrap" style="display:none;"></div>
+
+</div>
+<script>
+var sourceLink = '';
+var currentData = null;
+var NEW_WINDOW_MS = 24*60*60*1000;
+
+function isNewItem(b){
+  if (!b.date) return false;
+  var age = Date.now() - b.date.getTime();
+  return age>=0 && age < NEW_WINDOW_MS;
+}
+var globalPublishDate = '';
+var activeScope = 'all';
+
+function quarterOf(d){ return Math.floor(d.getMonth()/3)+1; }
+function quarterStart(year, q){ return new Date(year, (q-1)*3, 1); }
+function quarterEnd(year, q){ return new Date(year, q*3, 0); }
+function fmtDate(d){ return d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}); }
+function fmtMonthYear(d){ return d.toLocaleDateString('en-US', {month:'short', year:'numeric'}); }
+function scopeBtnStyle(active){
+  return active
+    ? 'padding:6px 12px; font-size:12.5px; background:var(--text-primary); color:var(--surface-2); border-color:var(--text-primary); font-weight:500;'
+    : 'padding:6px 12px; font-size:12.5px;';
+}
+
+function getScopedData(scope){
+  if (!currentData) return {impactBlocks:[], recommendations:[], summaryNotes:[]};
+  if (!scope || scope==='all') return currentData;
+  var m = /^(\d+)-Q(\d)$/.exec(scope);
+  if (!m) return currentData;
+  var year = +m[1], q = +m[2];
+  var start = quarterStart(year,q), end = quarterEnd(year,q);
+  var blocks = currentData.impactBlocks.filter(function(b){ return b.date && b.date>=start && b.date<=end; });
+  return {impactBlocks:blocks, recommendations:currentData.recommendations, summaryNotes:currentData.summaryNotes};
+}
+
+function setScope(key){
+  activeScope = key;
+  renderQuarterButtons();
+  refreshScopedResults();
+}
+
+function renderQuarterButtons(){
+  var box = document.getElementById('quarterButtons');
+  if (!box) return;
+  var allActive = activeScope==='all';
+  var allBtn = '<button onclick="setScope(\'all\')" style="'+scopeBtnStyle(allActive)+'"><i class="ti ti-list-details" style="font-size:13px; vertical-align:-2px; margin-right:3px;" aria-hidden="true"></i>All updates</button>';
+  if (!globalPublishDate){
+    box.innerHTML = allBtn + '<p class="tiny" style="margin:6px 0 0; width:100%;">Add a publish date in step 4 to also filter by quarter.</p>';
+    return;
+  }
+  var pub = new Date(globalPublishDate+'T00:00:00');
+  var today = new Date();
+  var y = pub.getFullYear(), q = quarterOf(pub);
+  var quarters = [];
+  var guard = 0;
+  while (guard<40){
+    guard++;
+    var qEndDate = quarterEnd(y,q);
+    if (qEndDate > today) break;
+    quarters.push({year:y, q:q});
+    q++;
+    if (q>4){ q=1; y++; }
+  }
+  var quarterBtns = quarters.map(function(qt){
+    var key = qt.year+'-Q'+qt.q;
+    var active = key===activeScope;
+    var label = 'Q'+qt.q+': '+fmtMonthYear(quarterStart(qt.year,qt.q))+' &ndash; '+fmtMonthYear(quarterEnd(qt.year,qt.q));
+    return '<button onclick="setScope(\''+key+'\')" style="'+scopeBtnStyle(active)+'">'+label+'</button>';
+  }).join('');
+  box.innerHTML = allBtn + quarterBtns;
+  if (!quarters.length){
+    box.innerHTML += '<p class="tiny" style="margin:6px 0 0; width:100%;">No full quarter has completed since this deck was published yet.</p>';
+  }
+}
+
+var MOCK_DIRECTORY = [
+  {name:'Jordan Lee', role:'Product manager'},
+  {name:'Amara Osei', role:'Engineering lead'},
+  {name:'Ben Torres', role:'Product designer'},
+  {name:'Sofia Martins', role:'Data scientist'},
+  {name:'Marcus Chen', role:'Policy manager'},
+  {name:'Elena Petrova', role:'Trust and safety lead'},
+  {name:'Daniel Kim', role:'Comms manager'},
+  {name:'Grace Adeyemi', role:'Government relations'},
+  {name:'Owen Bailey', role:'Content strategist'},
+  {name:'Grace', role:'UX researcher'}
+];
+var MOCK_CHANNELS = [
+  {name:'#stem-feed-launch', members:34},
+  {name:'#trust-and-safety', members:112},
+  {name:'#policy-updates', members:58},
+  {name:'#eng-stemfeed', members:21},
+  {name:'#brand-comms', members:45},
+  {name:'#research-ops', members:19},
+  {name:'#roadmap-reviews', members:27},
+  {name:'#creator-team', members:40}
+];
+var selectedTeam = [];
+var selectedChannels = [];
+
+function searchDirectory(q){
+  var box = document.getElementById('teamSuggest');
+  q = (q||'').toLowerCase().trim();
+  var matches = MOCK_DIRECTORY.filter(function(p){
+    if (selectedTeam.some(function(s){ return s.name===p.name; })) return false;
+    if (!q) return true;
+    return p.name.toLowerCase().indexOf(q)!==-1 || p.role.toLowerCase().indexOf(q)!==-1;
+  }).slice(0,6);
+  if (!matches.length){ box.style.display='none'; box.innerHTML=''; return; }
+  box.innerHTML = matches.map(function(p){
+    return '<div class="suggest-item" onmousedown="addTeamMember(\''+p.name.replace(/'/g,"\\'")+'\')"><i class="ti ti-user" style="font-size:14px; margin-right:6px; color:var(--text-secondary);" aria-hidden="true"></i><span style="font-weight:500;">'+esc(p.name)+'</span><span class="tiny" style="margin-left:6px;">'+esc(p.role)+'</span></div>';
+  }).join('');
+  box.style.display='block';
+}
+function addTeamMember(name){
+  var person = MOCK_DIRECTORY.filter(function(p){ return p.name===name; })[0];
+  if (!person || selectedTeam.some(function(s){ return s.name===name; })) return;
+  selectedTeam.push(person);
+  document.getElementById('teamSearch').value='';
+  document.getElementById('teamSuggest').style.display='none';
+  renderTeamChips();
+}
+function removeTeamMember(name){
+  selectedTeam = selectedTeam.filter(function(s){ return s.name!==name; });
+  renderTeamChips();
+}
+function renderTeamChips(){
+  document.getElementById('teamChips').innerHTML = selectedTeam.map(function(p){
+    return '<span class="pill">'+esc(p.name)+' &middot; '+esc(p.role)+'<button class="chip-x" onclick="removeTeamMember(\''+p.name.replace(/'/g,"\\'")+'\')" aria-label="Remove '+esc(p.name)+'"><i class="ti ti-x" style="font-size:11px;" aria-hidden="true"></i></button></span>';
+  }).join('');
+}
+
+function searchChannels(q){
+  var box = document.getElementById('channelSuggest');
+  q = (q||'').toLowerCase().trim().replace(/^#/,'');
+  var matches = MOCK_CHANNELS.filter(function(c){
+    if (selectedChannels.some(function(s){ return s.name===c.name; })) return false;
+    if (!q) return true;
+    return c.name.toLowerCase().indexOf(q)!==-1;
+  }).slice(0,6);
+  if (!matches.length){ box.style.display='none'; box.innerHTML=''; return; }
+  box.innerHTML = matches.map(function(c){
+    return '<div class="suggest-item" onmousedown="addChannel(\''+c.name.replace(/'/g,"\\'")+'\')"><i class="ti ti-hash" style="font-size:14px; margin-right:6px; color:var(--text-secondary);" aria-hidden="true"></i><span style="font-weight:500;">'+esc(c.name.replace('#',''))+'</span><span class="tiny" style="margin-left:6px;">'+c.members+' members</span></div>';
+  }).join('');
+  box.style.display='block';
+}
+function addChannel(name){
+  var chan = MOCK_CHANNELS.filter(function(c){ return c.name===name; })[0];
+  if (!chan || selectedChannels.some(function(s){ return s.name===name; })) return;
+  selectedChannels.push(chan);
+  document.getElementById('channelSearch').value='';
+  document.getElementById('channelSuggest').style.display='none';
+  renderChannelChips();
+}
+function removeChannel(name){
+  selectedChannels = selectedChannels.filter(function(s){ return s.name!==name; });
+  renderChannelChips();
+}
+function renderChannelChips(){
+  document.getElementById('channelChips').innerHTML = selectedChannels.map(function(c){
+    return '<span class="pill"><i class="ti ti-hash" style="font-size:11px; margin-right:2px;" aria-hidden="true"></i>'+esc(c.name.replace('#',''))+'<button class="chip-x" onclick="removeChannel(\''+c.name.replace(/'/g,"\\'")+'\')" aria-label="Remove '+esc(c.name)+'"><i class="ti ti-x" style="font-size:11px;" aria-hidden="true"></i></button></span>';
+  }).join('');
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.toggle('active', b.dataset.tab===name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id==='panel-'+name); });
+}
+
+function handleFile(e){
+  var files = Array.prototype.slice.call(e.target.files||[]);
+  if (!files.length) return;
+
+  var supported = [], skipped = [];
+  files.forEach(function(f){
+    var ext = f.name.split('.').pop().toLowerCase();
+    if (ext==='txt' || ext==='md') supported.push(f); else skipped.push(f.name);
+  });
+
+  if (skipped.length){
+    alert('Binary formats like .pptx, .docx, or .pdf aren\'t parsed in this prototype yet, so these were skipped: '+skipped.join(', ')+'. Paste that text into the Paste text tab instead.');
+  }
+  if (!supported.length) return;
+
+  var results = new Array(supported.length);
+  var remaining = supported.length;
+  supported.forEach(function(f, idx){
+    var reader = new FileReader();
+    reader.onload = function(evt){
+      results[idx] = '--- '+f.name+' ---\n\n'+evt.target.result;
+      remaining--;
+      if (remaining===0){
+        document.getElementById('deckText').value = results.join('\n\n');
+        switchTab('paste');
+      }
+    };
+    reader.readAsText(f);
+  });
+}
+
+function stripLeadingEmoji(s){
+  return s.replace(/^[^\x00-\x7F]+\s*/,'').trim();
+}
+
+var MOCK_SOURCES = [
+  {matchText:'Roadmap review incorporates STEM Feed creator research', type:'doc', owner:'Jordan Lee', context:'Confluence · STEM Feed space', title:'STEM Feed Q2 roadmap review — Jan 2026', link:'https://confluence.example.com/stemfeed/q2-roadmap-review-jan2026'},
+  {matchText:'Engineering scoping for STEM Feed qualification notifications', type:'jira', owner:'Amara Osei', context:'Jira · STEM project', title:'STEM-241 · Scope: in-app + email notifications for STEM Feed qualification', link:'https://jira.example.com/browse/STEM-241'},
+  {matchText:'Design review for STEM Feed quizzes feature', type:'slack', owner:'Ben Torres', context:'#stem-feed-launch', quote:'Quiz format is locked — short knowledge check, 2-3 questions max, no login required. Eng estimating Q2 build now.', link:'https://acme.slack.com/archives/C0STEMFEED/p1739836200'},
+  {matchText:'Policy sign-off to pilot broader topics in Australia', type:'doc', owner:'Marcus Chen', context:'Confluence · Policy space', title:'Policy review: STEM Feed topic expansion pilot', link:'https://confluence.example.com/policy/stemfeed-topic-expansion-pilot'},
+  {matchText:'Notifications and quizzes features committed to Q2 roadmap', type:'jira', owner:'Jordan Lee', context:'Jira · STEM project', title:'STEM-268 · Epic: Q2 STEM Feed creator supply initiatives', link:'https://jira.example.com/browse/STEM-268'},
+  {matchText:'Beta launch of STEM Feed qualification notifications', type:'slack', owner:'Amara Osei', context:'#eng-stemfeed', quote:'Notifications beta is live for about 50 low-volume STEM creators. Watching qualification rate and opt-outs this week.', link:'https://acme.slack.com/archives/C0ENGSTEM/p1743950400'},
+  {matchText:'piloting expansion of educational topics in the stem feed in Australia', type:'jira', owner:'Marcus Chen', context:'Jira · STEM project', title:'STEM-275 · Pilot: STEM Feed topic expansion — Australia', link:'https://jira.example.com/browse/STEM-275'},
+  {matchText:'launch of in-app notifications and emails when a creator video qualifies for the stem feed', type:'doc', owner:'Amara Osei', context:'Confluence · Engineering space', title:'STEM Feed notifications — full rollout notes', link:'https://confluence.example.com/eng/stemfeed-notifications-rollout'},
+  {matchText:'Launch of quizzes on STEM Feed', type:'slack', owner:'Jordan Lee', context:'#stem-feed-launch', quote:'Quizzes are live on STEM Feed as of today. Huge thanks to design and eng for turning this around in a quarter.', link:'https://acme.slack.com/archives/C0STEMFEED/p1747569600'},
+  {matchText:'Early creator supply signal from the STEM Feed', type:'doc', owner:'Sofia Martins', context:'Confluence · Data science space', title:'STEM Feed creator supply — June snapshot', link:'https://confluence.example.com/datascience/stemfeed-creator-supply-june-snapshot'},
+  {matchText:'Early engagement read from the Australia topic expansion', type:'slack', owner:'Marcus Chen', context:'#policy-updates', quote:'First engagement read from the AU pilot — session frequency trending up vs. STEM-only control. Not enough data yet to call it, but promising.', link:'https://acme.slack.com/archives/C0POLICY/p1750003200'},
+  {matchText:'Quiz retention scores show an early completion boost', type:'doc', owner:'Sofia Martins', context:'Confluence · Data science space', title:'Quiz retention — early read', link:'https://confluence.example.com/datascience/quiz-retention-early-read'}
+];
+
+function findSource(block){
+  var text = (block.headerDisplay||block.header||'');
+  var words = {};
+  (text.toLowerCase().match(/[a-z]{5,}/g)||[]).forEach(function(w){ words[w]=true; });
+  var best=null, bestScore=0;
+  MOCK_SOURCES.forEach(function(src){
+    var sw = src.matchText.toLowerCase().match(/[a-z]{5,}/g)||[];
+    var overlap=0;
+    sw.forEach(function(w){ if (words[w]) overlap++; });
+    if (overlap>bestScore){ bestScore=overlap; best=src; }
+  });
+  return bestScore>=2 ? best : null;
+}
+
+function sourceIcon(type){
+  if (type==='slack') return 'ti-brand-slack';
+  if (type==='jira') return 'ti-ticket';
+  return 'ti-file-text';
+}
+
+function renderSourceNote(b){
+  var src = findSource(b);
+  if (!src){
+    return '<div class="note"><i class="ti ti-plug-connected" style="font-size:12px; margin-right:4px;" aria-hidden="true"></i>No linked chat, ticket, or doc yet &mdash; connect Slack, Jira/Confluence, or Drive to attach the underlying thread and a timestamp here.</div>';
+  }
+  var actionLabel = src.type==='jira' ? 'Open ticket' : (src.type==='slack' ? 'Open in Slack' : 'Open document');
+  var html = '<div class="note" style="color:var(--text-secondary);">';
+  html += '<div class="row" style="gap:5px; margin-bottom:3px;"><i class="ti '+sourceIcon(src.type)+'" style="font-size:12px;" aria-hidden="true"></i><span style="font-weight:500; color:var(--text-primary);">'+esc(src.context)+'</span><span class="tiny">&nbsp;&middot; shared by '+esc(src.owner)+'</span></div>';
+  if (src.quote) html += '<p style="margin:0 0 4px; font-style:italic;">&ldquo;'+esc(src.quote)+'&rdquo;</p>';
+  if (src.title) html += '<p style="margin:0 0 4px;">'+esc(src.title)+'</p>';
+  html += '<a href="'+esc(src.link)+'" target="_blank">'+actionLabel+' <i class="ti ti-external-link" style="font-size:11px;" aria-hidden="true"></i></a>';
+  html += '</div>';
+  return html;
+}
+
+var MONTH_MAP = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+function extractDate(text){
+  var m = text.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-zA-Z]*\.?\s+(\d{1,2}),?\s+(\d{4})\b/i);
+  if (!m) return null;
+  var mon = MONTH_MAP[m[1].toLowerCase().slice(0,3)];
+  var day = parseInt(m[2],10), year = parseInt(m[3],10);
+  if (mon===undefined || isNaN(day) || isNaN(year)) return null;
+  return new Date(year, mon, day);
+}
+
+function parseDeck(raw){
+  var lines = raw.split(/\r?\n/).map(function(l){return l.trim();});
+
+  var title = 'Untitled study';
+  for (var i=0;i<lines.length;i++){
+    var l = lines[i];
+    if (l.length>8 && l.indexOf('*')!==0 && l.indexOf('[')!==0 && l.indexOf('http')===-1){ title = l; break; }
+  }
+
+  var fieldRe = /^(team|role|timeline|product|methodology|stats)\s*:\s*(.+)$/i;
+  var fields = {};
+  for (i=0;i<lines.length;i++){
+    var m = lines[i].match(fieldRe);
+    if (m){
+      var key = m[1].toLowerCase();
+      if (!(key in fields)){
+        var detail='';
+        for (var j=i+1;j<lines.length;j++){
+          if (!lines[j]) continue;
+          if (fieldRe.test(lines[j])) break;
+          detail = lines[j];
+          break;
+        }
+        fields[key] = {value:m[2].trim(), detail:detail};
+      }
+    }
+  }
+
+  var stakeholders='';
+  for (i=0;i<lines.length;i++){
+    if (/cross functional stakeholders/i.test(lines[i])){
+      var sm = lines[i].match(/from\s+(.+)$/i);
+      stakeholders = sm ? sm[1].replace(/\.$/,'') : lines[i];
+      break;
+    }
+  }
+
+  var objective='';
+  var objIdx=-1;
+  for (i=0;i<lines.length;i++){ if (/^objective$/i.test(lines[i])){ objIdx=i; break; } }
+  if (objIdx>=0){
+    var stopRe=/^(research questions|methodology|procedure|key findings)$/i;
+    var buf=[];
+    for (j=objIdx+1;j<lines.length;j++){
+      if (stopRe.test(lines[j])) break;
+      if (lines[j]) buf.push(lines[j]);
+    }
+    objective = buf.join(' ');
+  }
+
+  var insights=[];
+  var findIdx=-1;
+  for (i=0;i<lines.length;i++){ if (/^key findings$/i.test(lines[i])){ findIdx=i; break; } }
+  if (findIdx>=0){
+    var stopRe3=/^key recommendations$/i;
+    for (j=findIdx+1;j<lines.length;j++){
+      if (stopRe3.test(lines[j])) break;
+      var l4 = lines[j];
+      if (!l4) continue;
+      var fm = l4.match(/^\d+\.\s*(.+)$/);
+      if (fm) insights.push(stripLeadingEmoji(fm[1]));
+    }
+  }
+
+  function collectItemsFrom(startIdx, stopRe){
+    var out = [];
+    for (var k=startIdx; k<lines.length; k++){
+      var lk = lines[k];
+      if (stopRe && stopRe.test(lk)) break;
+      if (!lk) continue;
+      var item = lk.replace(/^[*-]\s*/,'').replace(/^\d+[\.\)]\s*/,'').trim();
+      if (item) out.push(stripLeadingEmoji(item));
+    }
+    return out;
+  }
+
+  var recommendations=[];
+
+  var recIdx=-1;
+  for (i=0;i<lines.length;i++){ if (/^key recommendations$/i.test(lines[i])) recIdx=i; }
+  if (recIdx>=0){
+    recommendations = collectItemsFrom(recIdx+1, /^impact$/i);
+  }
+
+  if (!recommendations.length){
+    var altHeadingRe = /^(recommendations|recommended (next steps|actions|changes)|suggested (recommendations|actions)|next steps)\s*:?$/i;
+    for (i=0;i<lines.length;i++){
+      if (altHeadingRe.test(lines[i])){
+        var found = collectItemsFrom(i+1, /^(impact|key findings|methodology|procedure|objective)\s*:?$/i);
+        if (found.length){ recommendations = found; break; }
+      }
+    }
+  }
+
+  if (!recommendations.length){
+    var embeddedRe = /^\*?\s*key recommendations?\s*:?\s*$/i;
+    for (i=0;i<lines.length;i++){
+      if (embeddedRe.test(lines[i])){
+        for (var k2=i+1; k2<lines.length; k2++){
+          var lk2 = lines[k2];
+          if (!lk2){ continue; }
+          var bm = lk2.match(/^[*-]\s*(.+)$/);
+          if (bm){ recommendations.push(stripLeadingEmoji(bm[1])); continue; }
+          break;
+        }
+      }
+    }
+  }
+
+  recommendations = recommendations.filter(Boolean);
+
+  var impactBlocks=[];
+  var impIdx=-1;
+  for (i=0;i<lines.length;i++){ if (/^impact$/i.test(lines[i])) impIdx=i; }
+  if (impIdx>=0){
+    var current=null;
+    for (j=impIdx+1;j<lines.length;j++){
+      var l3 = lines[j];
+      if (!l3) continue;
+      if (/\]\(http/.test(l3) || l3.indexOf('[')===0) continue;
+      if (/^[*-]\s*/.test(l3)){
+        if (current) current.bullets.push(l3.replace(/^[*-]\s*/,''));
+      } else {
+        if (current && current.bullets.length) impactBlocks.push(current);
+        current = {header:stripLeadingEmoji(l3), bullets:[]};
+      }
+    }
+    if (current && current.bullets.length) impactBlocks.push(current);
+  }
+
+  var kw = {
+    alignment:['pilot','strategic','strategy','direction','roadmap','expand','decision','decide','align','prioriti','deprioriti'],
+    execution:['launch','launching','ship','shipped','feature','notification','build','deploy','experiment','quiz','in-app'],
+    metrics:['%','percent','retention','engagement','growth','dau','metric','score','click','conversion']
+  };
+  function classify(text){
+    var t = text.toLowerCase();
+    var scores = {alignment:0, execution:0, metrics:0};
+    Object.keys(kw).forEach(function(cat){
+      kw[cat].forEach(function(k){ if (t.indexOf(k)!==-1) scores[cat]++; });
+    });
+    var best='execution', bestScore=-1;
+    Object.keys(scores).forEach(function(cat){ if (scores[cat]>bestScore){ best=cat; bestScore=scores[cat]; } });
+    return {category:best, scores:scores};
+  }
+
+  impactBlocks.forEach(function(b, bi){
+    b.uid = 'p'+bi;
+    var full = b.header+' '+b.bullets.join(' ');
+    var c = classify(full);
+    b.category = c.category;
+    b.metricSignal = c.scores.metrics>0;
+    b.date = extractDate(full);
+    b.headerDisplay = b.header.replace(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-zA-Z]*\.?\s+\d{1,2},?\s+\d{4}\s*[-–—]\s*/i,'').trim() || b.header;
+    var words = {};
+    (full.toLowerCase().match(/[a-z]{5,}/g)||[]).forEach(function(w){ words[w]=true; });
+    var bestRec=-1, bestOverlap=0;
+    recommendations.forEach(function(r,idx){
+      var rw = r.toLowerCase().match(/[a-z]{5,}/g)||[];
+      var overlap=0;
+      rw.forEach(function(w){ if (words[w]) overlap++; });
+      if (overlap>bestOverlap){ bestOverlap=overlap; bestRec=idx; }
+    });
+    b.linkedRec = bestOverlap>=2 ? bestRec : -1;
+  });
+
+  return {title:title, fields:fields, stakeholders:stakeholders, objective:objective, insights:insights, recommendations:recommendations, impactBlocks:impactBlocks, summaryNotes:[]};
+}
+
+function catMeta(cat){
+  if (cat==='alignment') return {label:'Alignment impact', icon:'ti-scale', badgeClass:'pro', badgeLabel:'Alignment', blurb:'Decisions made for or against your recommendations.', examples:'e.g. roadmap changes, strategy calls, pilots approved or deprioritized'};
+  if (cat==='metrics') return {label:'Metrics impact', icon:'ti-chart-line', badgeClass:'success', badgeLabel:'Metrics', blurb:'Measurable outcomes tied to the work.', examples:'e.g. DAU, engagement, retention, conversion, click-through'};
+  return {label:'Execution impact', icon:'ti-code', badgeClass:'accent', badgeLabel:'Execution', blurb:'Concrete work shipped or in progress.', examples:'e.g. experiments, code changes, launches, deployments, Jira tickets'};
+}
+
+function esc(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escAttr(s){
+  return esc(s).replace(/"/g,'&quot;');
+}
+
+function editRow(kind, idx, text){
+  var onBlur = kind==='rec' ? ' onblur="updateAnalysis()"' : '';
+  var onRemove = kind==='rec' ? "this.closest('.edit-row').remove(); updateAnalysis();" : "this.closest('.edit-row').remove();";
+  return '<div class="edit-row" data-kind="'+kind+'" style="display:flex; gap:5px; align-items:center; margin-bottom:4px;">'
+    + '<input type="text" value="'+escAttr(text)+'" style="flex:1; height:30px; font-size:12.5px; padding:0 8px;"'+onBlur+' />'
+    + '<button class="icon-btn" onclick="'+onRemove+'" aria-label="Remove" style="padding:4px 6px; height:30px;"><i class="ti ti-x" style="font-size:13px;" aria-hidden="true"></i></button>'
+    + '</div>';
+}
+
+function addRow(kind){
+  var containerId = kind==='insight' ? 'insightsList' : 'recsList';
+  var el = document.getElementById(containerId);
+  el.insertAdjacentHTML('beforeend', editRow(kind, -1, ''));
+}
+
+function catCounts(data){
+  var counts = {alignment:0, execution:0, metrics:0};
+  data.impactBlocks.forEach(function(b){ counts[b.category]++; });
+  return counts;
+}
+
+function statCard(cat, count){
+  var meta = catMeta(cat);
+  return '<div onclick="scrollToCat(\''+cat+'\')" style="background:var(--surface-1); border-radius:var(--radius); padding:0.75rem; cursor:pointer;">'
+    + '<p class="tiny" style="margin:0 0 2px;">'+meta.label+'</p>'
+    + '<p style="margin:0; font-size:22px; font-weight:500;">'+count+'</p>'
+    + '</div>';
+}
+
+function scrollToCat(cat){
+  var el = document.getElementById('card-'+cat);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function buildSummarySentence(data, counts){
+  var total = data.impactBlocks.length;
+  if (!total) return 'No linked activity detected yet for this deck. Once Slack, Jira/Confluence, and Drive are connected, this section will summarize what changed as a result of your recommendations.';
+  var parts = [];
+  if (counts.alignment) parts.push(counts.alignment+' alignment '+(counts.alignment===1?'decision':'decisions'));
+  if (counts.execution) parts.push(counts.execution+' execution '+(counts.execution===1?'change':'changes'));
+  if (counts.metrics) parts.push(counts.metrics+' metric '+(counts.metrics===1?'update':'updates'));
+  var joined = parts.length>1 ? parts.slice(0,-1).join(', ')+', and '+parts[parts.length-1] : parts[0];
+  var sentence = 'Since this deck was processed, '+total+' impact '+(total===1?'item has':'items have')+' been detected: '+joined+'.';
+  if (counts.metrics===0) sentence += ' No measurable outcomes have been reported yet &mdash; check back once results come in.';
+  return sentence;
+}
+
+function renderSummary(data){
+  var counts = catCounts(data);
+  var html = '<div class="card"><h2><i class="ti ti-report-analytics" style="font-size:16px; vertical-align:-2px; margin-right:6px;" aria-hidden="true"></i>Impact summary</h2>';
+  html += '<div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-bottom:12px;">';
+  html += statCard('alignment', counts.alignment);
+  html += statCard('execution', counts.execution);
+  html += statCard('metrics', counts.metrics);
+  html += '</div>';
+  html += '<p style="margin:0; font-size:14px; line-height:1.6;">'+buildSummarySentence(data, counts)+'</p>';
+
+  var notes = data.summaryNotes||[];
+  if (notes.length){
+    html += '<div style="margin-top:10px;">';
+    notes.forEach(function(n,idx){
+      html += '<div class="between" style="margin-top:4px; align-items:flex-start;"><p class="tiny" style="margin:0; flex:1;"><i class="ti ti-note" style="font-size:11px; margin-right:4px;" aria-hidden="true"></i>'+esc(n)+'</p><button class="icon-btn" onclick="removeSummaryNote('+idx+')" aria-label="Remove note" style="padding:2px 5px;"><i class="ti ti-x" style="font-size:11px;" aria-hidden="true"></i></button></div>';
+    });
+    html += '</div>';
+  }
+  html += '<button class="toggle" style="margin-top:10px;" onclick="toggleAddNoteForm()">+ Add note</button>';
+  html += '<div id="addNoteForm" style="display:none; margin-top:6px;"><div class="row" style="gap:6px;"><input type="text" id="newNoteInput" placeholder="Add a manual note or update" style="flex:1;" onkeydown="if(event.key===\'Enter\')submitSummaryNote();"><button class="primary" onclick="submitSummaryNote()">Add</button></div></div>';
+  html += '</div>';
+  return html;
+}
+
+function formatInputDate(d){
+  var mm = ('0'+(d.getMonth()+1)).slice(-2), dd = ('0'+d.getDate()).slice(-2);
+  return d.getFullYear()+'-'+mm+'-'+dd;
+}
+
+function findBlock(uid){
+  if (!currentData || !currentData.impactBlocks) return null;
+  var found = currentData.impactBlocks.filter(function(b){ return b.uid===uid; });
+  return found[0]||null;
+}
+
+function refreshScopedResults(){
+  var scoped = getScopedData(activeScope);
+  var el = document.getElementById('scopedResults');
+  if (el) el.innerHTML = renderSummary(scoped) + renderCallouts(scoped);
+}
+
+function toggleAddNoteForm(){
+  var el = document.getElementById('addNoteForm');
+  if (!el) return;
+  el.style.display = (el.style.display==='block') ? 'none' : 'block';
+  var inp = document.getElementById('newNoteInput');
+  if (el.style.display==='block' && inp) inp.focus();
+}
+function submitSummaryNote(){
+  var el = document.getElementById('newNoteInput');
+  if (!el) return;
+  var val = el.value.trim();
+  if (!val || !currentData) return;
+  if (!currentData.summaryNotes) currentData.summaryNotes = [];
+  currentData.summaryNotes.push(val);
+  refreshScopedResults();
+}
+function removeSummaryNote(idx){
+  if (!currentData || !currentData.summaryNotes) return;
+  currentData.summaryNotes.splice(idx,1);
+  refreshScopedResults();
+}
+
+function showAddForm(cat){
+  var el = document.getElementById('addform-'+cat);
+  if (el) el.style.display = 'block';
+}
+function hideAddForm(cat){
+  var el = document.getElementById('addform-'+cat);
+  if (el) el.style.display = 'none';
+  ['addHeader-','addDesc-','addDate-'].forEach(function(p){
+    var inp = document.getElementById(p+cat);
+    if (inp) inp.value='';
+  });
+}
+function submitManualItem(cat){
+  var headerEl = document.getElementById('addHeader-'+cat);
+  var descEl = document.getElementById('addDesc-'+cat);
+  var dateEl = document.getElementById('addDate-'+cat);
+  var header = headerEl.value.trim();
+  if (!header){ headerEl.focus(); return; }
+  var desc = descEl.value.trim();
+  var dateVal = dateEl.value;
+  var block = {
+    uid: 'm'+Date.now()+'-'+Math.floor(Math.random()*10000),
+    header: header,
+    headerDisplay: header,
+    bullets: desc ? [desc] : [],
+    category: cat,
+    date: dateVal ? new Date(dateVal+'T00:00:00') : null,
+    linkedRec: -1,
+    metricSignal: false,
+    manual: true
+  };
+  if (!currentData.impactBlocks) currentData.impactBlocks = [];
+  currentData.impactBlocks.push(block);
+  refreshScopedResults();
+}
+
+function editItem(uid){
+  var b = findBlock(uid);
+  if (!b) return;
+  b.editing = true;
+  refreshScopedResults();
+}
+function cancelItemEdit(uid){
+  var b = findBlock(uid);
+  if (!b) return;
+  b.editing = false;
+  refreshScopedResults();
+}
+function saveItemEdit(uid){
+  var b = findBlock(uid);
+  if (!b) return;
+  var h = document.getElementById('editHeader-'+uid).value.trim();
+  var d = document.getElementById('editDesc-'+uid).value.trim();
+  var dt = document.getElementById('editDate-'+uid).value;
+  var cat = document.getElementById('editCat-'+uid).value;
+  if (h){ b.header = h; b.headerDisplay = h; }
+  var restBullets = b.bullets.slice(1);
+  b.bullets = d ? [d].concat(restBullets) : restBullets;
+  b.date = dt ? new Date(dt+'T00:00:00') : null;
+  b.category = cat;
+  b.editing = false;
+  b.manualEdited = true;
+  refreshScopedResults();
+}
+function deleteItem(uid){
+  if (!currentData || !currentData.impactBlocks) return;
+  currentData.impactBlocks = currentData.impactBlocks.filter(function(b){ return b.uid!==uid; });
+  refreshScopedResults();
+}
+
+function renderCallouts(data){
+  var html = '';
+  var byCat = {alignment:[], execution:[], metrics:[]};
+  data.impactBlocks.forEach(function(b){ byCat[b.category].push(b); });
+
+  ['alignment','execution','metrics'].forEach(function(cat){
+    var meta = catMeta(cat);
+    html += '<div class="card" id="card-'+cat+'"><div class="section-head" style="margin-bottom:2px;"><i class="ti '+meta.icon+'" aria-hidden="true"></i><h2 style="margin:0;">'+meta.label+'</h2></div>';
+    html += '<p class="tiny" style="margin:0 0 0.75rem;">'+esc(meta.blurb)+' <span style="color:var(--text-muted);">'+esc(meta.examples)+'</span></p>';
+    var blocks = byCat[cat];
+    if (!blocks.length){
+      html += '<p class="muted" style="margin:0;">No call-outs detected in this category yet.</p>';
+    } else {
+      blocks.forEach(function(b,idx){
+        var did = cat+'-'+idx;
+        var fresh = isNewItem(b);
+
+        if (b.editing){
+          html += '<div class="item" style="'+(idx===0?'padding-top:0;':'')+'">';
+          html += '<input type="text" id="editHeader-'+b.uid+'" value="'+escAttr(b.headerDisplay||b.header)+'" style="margin-bottom:6px;" placeholder="What happened">';
+          html += '<textarea id="editDesc-'+b.uid+'" style="min-height:56px; margin-bottom:6px;" placeholder="Short description">'+esc(b.bullets[0]||'')+'</textarea>';
+          html += '<div class="row" style="gap:8px; flex-wrap:wrap;">';
+          html += '<input type="date" id="editDate-'+b.uid+'" value="'+(b.date?formatInputDate(b.date):'')+'" style="width:150px;">';
+          html += '<select id="editCat-'+b.uid+'"><option value="alignment"'+(b.category==='alignment'?' selected':'')+'>Alignment</option><option value="execution"'+(b.category==='execution'?' selected':'')+'>Execution</option><option value="metrics"'+(b.category==='metrics'?' selected':'')+'>Metrics</option></select>';
+          html += '<button class="primary" onclick="saveItemEdit(\''+b.uid+'\')">Save</button>';
+          html += '<button onclick="cancelItemEdit(\''+b.uid+'\')">Cancel</button>';
+          html += '</div></div>';
+          return;
+        }
+
+        html += '<div class="item'+(fresh?' new-item':'')+'" style="'+(idx===0&&!fresh?'padding-top:0;':'')+'">';
+        html += '<div class="between"><span style="font-size:14px; font-weight:'+(fresh?'600':'500')+';">'+esc(b.headerDisplay||b.header)+'</span>';
+        html += '<span class="row" style="gap:4px;">'+(fresh?'<span class="badge new"><i class="ti ti-star-filled" style="font-size:11px;" aria-hidden="true"></i> New</span>':'')+'<span class="badge '+meta.badgeClass+'">'+meta.badgeLabel+'</span>'
+          +'<button class="icon-btn" onclick="editItem(\''+b.uid+'\')" aria-label="Edit" style="padding:3px 5px;"><i class="ti ti-pencil" style="font-size:12px;" aria-hidden="true"></i></button>'
+          +'<button class="icon-btn" onclick="deleteItem(\''+b.uid+'\')" aria-label="Delete" style="padding:3px 5px;"><i class="ti ti-trash" style="font-size:12px;" aria-hidden="true"></i></button>'
+          +'</span></div>';
+        if (b.date) html += '<p class="tiny" style="margin:2px 0 0;"><i class="ti ti-calendar-event" style="font-size:11px;" aria-hidden="true"></i> '+esc(fmtDate(b.date))+'</p>';
+        html += '<p style="margin:4px 0 0; font-size:14px;">'+esc(b.bullets[0]||'')+'</p>';
+        html += '<button class="toggle" style="margin-top:6px;" onclick="toggleDetail(\''+did+'\')">View details</button>';
+        html += '<div class="detail" id="detail-'+did+'">';
+        if (b.bullets.length>1){
+          b.bullets.slice(1).forEach(function(bul){ html += '<p style="margin:4px 0; font-size:13px;">'+esc(bul)+'</p>'; });
+        }
+        if (b.linkedRec>=0 && data.recommendations[b.linkedRec]) html += '<p class="tiny" style="margin:6px 0 0;">Linked recommendation: R'+(b.linkedRec+1)+' &middot; '+esc(data.recommendations[b.linkedRec]).slice(0,90)+'...</p>';
+        if (b.metricSignal && cat!=='metrics') html += '<p class="tiny" style="margin:4px 0 0;">Mentions a measurable signal &mdash; worth watching in the metrics section once results land.</p>';
+        html += renderSourceNote(b);
+        html += '</div></div>';
+      });
+    }
+    html += '<button class="toggle" style="margin-top:10px;" onclick="showAddForm(\''+cat+'\')">+ Add update</button>';
+    html += '<div id="addform-'+cat+'" style="display:none; margin-top:8px; padding:10px; background:var(--surface-1); border-radius:var(--radius);">';
+    html += '<input type="text" id="addHeader-'+cat+'" placeholder="What happened" style="margin-bottom:6px;">';
+    html += '<textarea id="addDesc-'+cat+'" placeholder="Short description" style="min-height:56px; margin-bottom:6px;"></textarea>';
+    html += '<div class="row" style="gap:8px; flex-wrap:wrap;">';
+    html += '<input type="date" id="addDate-'+cat+'" style="width:150px;">';
+    html += '<button class="primary" onclick="submitManualItem(\''+cat+'\')">Add</button>';
+    html += '<button onclick="hideAddForm(\''+cat+'\')">Cancel</button>';
+    html += '</div></div>';
+    html += '</div>';
+  });
+  return html;
+}
+
+function renderResults(data){
+  currentData = data;
+  var f = data.fields;
+  var publishDate = globalPublishDate;
+  var contextBits = [];
+  if (f.role) contextBits.push(f.role.value);
+  if (f.timeline) contextBits.push(f.timeline.value);
+  if (f.methodology) contextBits.push(f.methodology.value);
+
+  var html = '';
+  html += '<div class="card" style="padding:0.75rem 1rem;"><div class="between" style="align-items:flex-start;">';
+  html += '<input id="deckTitleInput" type="text" value="'+escAttr(data.title)+'" style="font-size:16px; font-weight:500; border:none; background:transparent; padding:1px 0; flex:1; height:auto;" />';
+  html += '<button onclick="showInputCard()" style="padding:5px 10px; font-size:12px;"><i class="ti ti-edit" style="font-size:13px; vertical-align:-2px; margin-right:3px;" aria-hidden="true"></i>Edit source</button>';
+  html += '</div>';
+  var metaLine = contextBits.slice();
+  if (selectedTeam.length) metaLine.push('Team: '+selectedTeam.map(function(p){return p.name;}).join(', '));
+  if (selectedChannels.length) metaLine.push('Channels: '+selectedChannels.map(function(c){return c.name;}).join(', '));
+  if (metaLine.length) html += '<p class="tiny" style="margin:3px 0 0;">'+esc(metaLine.join(' &middot; '))+'</p>';
+  if (sourceLink) html += '<p class="tiny" style="margin:2px 0 0;"><i class="ti ti-link" style="font-size:11px;" aria-hidden="true"></i> <a href="'+esc(sourceLink)+'" target="_blank">'+esc(sourceLink)+'</a></p>';
+  if (publishDate) html += '<p class="tiny" style="margin:6px 0 0;"><i class="ti ti-calendar-event" style="font-size:11px;" aria-hidden="true"></i> Published '+esc(fmtDate(new Date(publishDate+'T00:00:00')))+'</p>';
+  html += '</div>';
+
+  html += '<div class="card" style="padding:0.75rem 1rem;"><div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px;">';
+  html += '<div><h3 style="margin:0 0 6px;">Identified insights</h3><div id="insightsList">';
+  (data.insights.length ? data.insights : ['']).forEach(function(txt){ html += editRow('insight', -1, txt); });
+  html += '</div><button onclick="addRow(\'insight\')" style="padding:4px 9px; font-size:12px; margin-top:2px;"><i class="ti ti-plus" style="font-size:12px; vertical-align:-2px; margin-right:3px;" aria-hidden="true"></i>Add insight</button></div>';
+  html += '<div><h3 style="margin:0 0 6px;">Recommendations</h3><div id="recsList">';
+  (data.recommendations.length ? data.recommendations : ['']).forEach(function(txt){ html += editRow('rec', -1, txt); });
+  html += '</div><button onclick="addRow(\'rec\')" style="padding:4px 9px; font-size:12px; margin-top:2px;"><i class="ti ti-plus" style="font-size:12px; vertical-align:-2px; margin-right:3px;" aria-hidden="true"></i>Add recommendation</button></div>';
+  html += '</div></div>';
+
+  html += '<div class="card" style="padding:0.75rem 1rem;"><h3 style="margin:0 0 6px;">Quarterly recaps and impact to date</h3><p class="tiny" style="margin:0 0 8px;">Filters the summary and impact sections below.</p><div id="quarterButtons" class="row" style="flex-wrap:wrap; gap:6px;"></div></div>';
+
+  html += '<div id="scopedResults">'+renderSummary(data)+renderCallouts(data)+'</div>';
+
+  var wrap = document.getElementById('resultsWrap');
+  wrap.innerHTML = html;
+  wrap.style.display = 'block';
+  document.getElementById('setupWrap').style.display = 'none';
+  activeScope = 'all';
+  renderQuarterButtons();
+}
+
+function updateAnalysis(){
+  var recRows = document.querySelectorAll('#recsList .edit-row input');
+  var recommendations = Array.prototype.map.call(recRows, function(inp){ return inp.value.trim(); }).filter(Boolean);
+  currentData.recommendations = recommendations;
+
+  currentData.impactBlocks.forEach(function(b){
+    var full = b.header+' '+b.bullets.join(' ');
+    var words = {};
+    (full.toLowerCase().match(/[a-z]{5,}/g)||[]).forEach(function(w){ words[w]=true; });
+    var bestRec=-1, bestOverlap=0;
+    recommendations.forEach(function(r,idx){
+      var rw = r.toLowerCase().match(/[a-z]{5,}/g)||[];
+      var overlap=0;
+      rw.forEach(function(w){ if (words[w]) overlap++; });
+      if (overlap>bestOverlap){ bestOverlap=overlap; bestRec=idx; }
+    });
+    b.linkedRec = bestOverlap>=2 ? bestRec : -1;
+  });
+
+  refreshScopedResults();
+}
+
+function showInputCard(){
+  document.getElementById('setupWrap').style.display = 'block';
+  document.getElementById('setupWrap').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleDetail(id){
+  document.getElementById('detail-'+id).classList.toggle('open');
+}
+
+function processDeck(){
+  var linkVal = document.getElementById('linkInput').value.trim();
+  if (linkVal) sourceLink = linkVal;
+  var pubEl = document.getElementById('publishDateSetup');
+  if (pubEl) globalPublishDate = pubEl.value;
+  var icon = document.getElementById('processIcon');
+  var label = document.getElementById('processLabel');
+  var status = document.getElementById('processStatus');
+  icon.classList.add('spin');
+  label.textContent = 'Processing...';
+  status.textContent = '';
+  setTimeout(function(){
+    var text = document.getElementById('deckText').value;
+    var data = parseDeck(text);
+    renderResults(data);
+    icon.classList.remove('spin');
+    label.textContent = 'Process deck';
+    status.textContent = 'Done · '+data.impactBlocks.length+' impact item(s) found';
+  }, 500);
+}
+</script>
+</body>
+</html>
